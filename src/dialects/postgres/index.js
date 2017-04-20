@@ -13,6 +13,7 @@ import SchemaCompiler from './schema/compiler';
 import {makeEscape} from '../../query/string';
 
 let pool;
+let poolReadReplica;
 let pg;
 
 function Client_PG(config) {
@@ -104,13 +105,19 @@ assign(Client_PG.prototype, {
 
   // Get a raw connection, called by the `pool` whenever a new
   // connection needs to be added to the pool.
-  acquireRawConnection() {
+  acquireRawConnection(isRead = false) {
     const client = this;
-    if (!pool) {
+    if (!pool && !isRead) {
       pool = new pg.Pool(client.connectionSettings);
     }
+
+    if (!poolReadReplica && isRead) {
+      poolReadReplica = new pg.Pool(client.readReplicaConnectionSettings);
+    }
+
     return new Promise(function(resolver, rejecter) {
-      pool.connect().then((connection) => {
+      let thePool = isRead ? poolReadReplica : pool;
+      thePool.connect().then((connection) => {
         connection.on('error', (err) => {
           connection.__knex__disposed = err
         })
