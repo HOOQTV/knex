@@ -46,6 +46,9 @@ function Client(config = {}) {
   }
 
   this.connectionSettings = cloneDeep(config.connection || {})
+  if (config.pool) {
+    assign(this.connectionSettings, config.pool)
+  }
   if (this.driverName && config.connection) {
     this.initializeDriver()
     if (!config.pool || (config.pool && config.pool.max !== 0)) {
@@ -217,14 +220,19 @@ assign(Client.prototype, {
       helpers.warn('The pool has already been initialized')
       return
     }
+    if (config.pool) {
+      assign(this.connectionSettings, config.pool)
+    }
     this.pool = new Pool(assign(this.poolDefaults(config.pool || {}), config.pool))
 
     // readReplicaConnectionSettings
     // { readReplica: { connection } }
     if (config.readReplica && config.readReplica.connection) {
       this.readReplicaConnectionSettings = cloneDeep(config.readReplica.connection)
-      let readReplicaConfig = config.readReplica.config || {}
-      this.readReplicaPool = new Pool(assign(this.poolDefaults(readReplicaConfig.pool || {}, true), readReplicaConfig.pool))
+      if (config.readReplica.pool) {
+        assign(this.readReplicaConnectionSettings, config.readReplica.pool)
+      }
+      this.readReplicaPool = new Pool(assign(this.poolDefaults(config.readReplica.pool || {}, true), config.readReplica.pool))
       this.hasReadReplica = true
     }
   },
