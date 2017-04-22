@@ -1,6 +1,6 @@
 {
   "name": "knex-pg-rr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Knex with PG with read-replica support",
   "main": "knex.js",
   "dependencies": {
