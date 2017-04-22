@@ -87,7 +87,8 @@
     "sql",
     "query",
     "postgresql",
-    "read-replica"
+    "read-replica",
+    "hooq"
   ],
   "author": {
     "name": "Tim Griesser",
