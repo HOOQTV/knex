@@ -1,7 +1,7 @@
 {
-  "name": "knex",
-  "version": "0.12.9",
-  "description": "A batteries-included SQL query & schema builder for Postgres, MySQL and SQLite3 and the Browser",
+  "name": "knex-pg-rr",
+  "version": "1.0.1",
+  "description": "Knex with PG with read-replica support",
   "main": "knex.js",
   "dependencies": {
     "babel-runtime": "^6.11.6",
