@@ -108,7 +108,6 @@ assign(Client_PG.prototype, {
   acquireRawConnection(isRead = false) {
     const client = this;
     if (!pool && !isRead) {
-      console.log('CLIENT', client.connectionSettings)
       pool = new pg.Pool(client.connectionSettings);
     }
 

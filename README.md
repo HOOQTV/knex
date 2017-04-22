@@ -10,7 +10,15 @@ With Read-replica support for PG only.
   readReplica: {
     connection: {
       idleTimeoutMillis: 1000 // timeout millis
+    },
+    pool: {
+      min: 1,
+      max: 5
     }
+  },
+  pool: {
+    min: 1,
+    max: 5
   }
 }
 ```
