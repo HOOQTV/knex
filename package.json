@@ -87,11 +87,7 @@
     "sql",
     "query",
     "postgresql",
-    "mysql",
-    "mariadb",
-    "sqlite3",
-    "oracle",
-    "mssql"
+    "read-replica"
   ],
   "author": {
     "name": "Tim Griesser",
