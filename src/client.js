@@ -232,7 +232,8 @@ assign(Client.prototype, {
       if (config.readReplica.pool) {
         assign(this.readReplicaConnectionSettings, config.readReplica.pool)
       }
-      this.readReplicaPool = new Pool(assign(this.poolDefaults(config.readReplica.pool || {}, true), config.readReplica.pool))
+      this.readReplicaPool = new Pool(assign(this.poolDefaults(config.readReplica.pool || {}, true),
+            config.readReplica.pool))
       this.hasReadReplica = true
     }
   },
@@ -258,7 +259,7 @@ assign(Client.prototype, {
           'Are you missing a .transacting(trx) call?'
         ))
       }, this.config.acquireConnectionTimeout || 60000)
-      let pool = (this.hasReadReplica && isRead) ? this.readReplicaPool : this.pool
+      const pool = (this.hasReadReplica && isRead) ? this.readReplicaPool : this.pool
 
       // acquire connection from pool
       pool.acquire((err, connection) => {
@@ -281,7 +282,7 @@ assign(Client.prototype, {
   releaseConnection(connection, isRead) {
     return new Promise((resolver) => {
       debug('releasing connection to pool: %s', connection.__knexUid)
-      let pool = (this.hasReadReplica && isRead) ? this.readReplicaPool : this.pool
+      const pool = (this.hasReadReplica && isRead) ? this.readReplicaPool : this.pool
       pool.release(connection)
       resolver()
     })
