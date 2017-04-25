@@ -135,6 +135,9 @@ export default function makeKnex(client) {
   client.on('query-response', function(response, obj, builder) {
     knex.emit('query-response', response, obj, builder)
   })
+  client.on('pool-activity', function(obj) {
+    knex.emit('pool-activity', obj)
+  })
 
   client.makeKnex = makeKnex
 
