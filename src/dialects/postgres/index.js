@@ -116,7 +116,7 @@ assign(Client_PG.prototype, {
     }
 
     return new Promise(function(resolver, rejecter) {
-      let thePool = isRead ? poolReadReplica : pool;
+      const thePool = isRead ? (poolReadReplica || pool) : pool;
       thePool.connect().then((connection) => {
         connection.on('error', (err) => {
           connection.__knex__disposed = err
