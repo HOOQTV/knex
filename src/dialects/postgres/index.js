@@ -121,6 +121,10 @@ assign(Client_PG.prototype, {
         connection.on('error', (err) => {
           connection.__knex__disposed = err
         })
+        client.emit('pool-activity', {
+          master: getPoolInfo(client.pool),
+          slave: getPoolInfo(client.readReplicaPool)
+        })
         return resolver(connection)
       })
     }).tap(function setSearchPath(connection) {
@@ -131,6 +135,10 @@ assign(Client_PG.prototype, {
   // Used to explicitly close a connection, called internally by the pool
   // when a connection times out or the pool is shutdown.
   destroyRawConnection(connection) {
+    this.emit('pool-activity', {
+      master: getPoolInfo(this.pool, 'destroy'),
+      slave: getPoolInfo(this.readReplicaPool, 'destroy')
+    })
     connection.end()
   },
 
@@ -251,6 +259,21 @@ function arrayString(arr, esc) {
     }
   }
   return result + '}'
+}
+
+function getPoolInfo(pool, action = 'acquire') {
+  if (!pool) {
+    return {};
+  }
+  return {
+    action,
+    name: pool.getName(),
+    size: pool.getPoolSize(),
+    availableObjectsCount: pool.availableObjectsCount(),
+    waitingClientsCount: pool.waitingClientsCount(),
+    maxPoolSize: pool.getMaxPoolSize(),
+    minPoolSize: pool.getMinPoolSize()
+  }
 }
 
 export default Client_PG
