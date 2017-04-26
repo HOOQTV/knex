@@ -3,9 +3,9 @@ const pg = require('pg')
 
 const connection = {
   // TODO: get this from .env
-  user: 'hooqapi',
-  database: 'backstage',
-  password: 'hooqapi-password1!',
+  user: 'user',
+  database: 'database',
+  password: 'password',
   host: 'localhost',
   port: 5432,
   max: 10,
@@ -18,9 +18,9 @@ const options = {
   readReplica: {
     // this should be the read replica connection settings
     connection: {
-      user: 'hooqapi',
-      database: 'backstage',
-      password: 'hooqapi-password1!',
+      user: 'user',
+      database: 'database',
+      password: 'password',
       host: 'localhost',
       port: 5432,
       max: 10,
