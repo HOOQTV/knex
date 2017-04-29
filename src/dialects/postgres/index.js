@@ -139,7 +139,7 @@ assign(Client_PG.prototype, {
       master: getPoolInfo(this.pool, 'destroy'),
       slave: getPoolInfo(this.readReplicaPool, 'destroy')
     })
-    connection.end()
+    connection.release();
   },
 
   // In PostgreSQL, we need to do a version check to do some feature
