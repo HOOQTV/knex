@@ -26,10 +26,17 @@ function success(text) {
 }
 
 function checkLocalModule(env) {
-  if (!env.modulePath) {
-    console.log(chalk.red('No local knex install found in:'), chalk.magenta(tildify(env.cwd)));
-    exit('Try running: npm install knex.');
+  // Because our executable is still called knex,
+  // env.modulePath and env.modulePackge are loaded using knex module normally.
+  // This fixes them to use knex-pg-rr instead.
+  try {
+    env.modulePath = require.resolve('knex-pg-rr');
+  } catch (e) {
+    console.log(chalk.red('No local knex-pg-rr install found in:'), chalk.magenta(tildify(env.cwd)));
+    exit('Try running: npm install knex-pg-rr.');
   }
+
+  env.modulePackage = require(path.resolve(env.modulePath, '..', 'package.json'));
 }
 
 function initKnex(env) {
